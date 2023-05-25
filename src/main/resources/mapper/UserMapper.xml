@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.piaomz.piaomz.mapper.UserMapper">
+    <select id="selectUser" resultType="User">
+        select * from user;
+    </select>
+    <select id="queryUser" resultType="User">
+        select * from user where uid=#{uid};
+    </select>
+    <select id="searchUserByNickName" resultType="User">
+        select * from user where nickname like #{nickname};
+    </select>
+    <select id="loginUser" resultType="User">
+        select * from user where username=#{username};
+    </select>
+    <insert id="signupUser" parameterType="User" useGeneratedKeys="true" keyProperty="user.uid">
+        insert into user (username,password,type) value (#{username}, #{password},"user");
+    </insert>
+    <delete id="deleteUser" parameterType="User">
+        delete from user where uid = #{uid};
+    </delete>
+    <update id="updateUserInfo" parameterType="User">
+        update user set nickname=#{nickname}, avatarurl = #{avatarUrl}, phone = #{phone} where uid = #{uid}
+    </update>
+    <update id="updateUserAdmin" parameterType="User">
+        update user set type="admin" where uid = #{uid}
+    </update>
+    <update id="updateUserTest" parameterType="User">
+        update user set type="test" where uid = #{uid}
+    </update>
+
+    <insert id="loginHisInsert" >
+        insert into loginHis (uid,time) value (#{uid}, #{time});
+    </insert>
+    <delete id="clearLoginHis" >
+        delete from LoginHis where uid = #{uid};
+    </delete>
+
+    <insert id="newSubscribe" parameterType="Subscribe">
+        insert into subscribe (uid,subscribeUid,time) value (#{uid},#{subscribeUid},#{time});
+    </insert>
+    <select id="selectSubscribe">
+        select * from subscribe where uid=#{uid};
+    </select>
+    <select id="selectSubscriber">
+        select * from subscribe where subscribeUid=#{uid};
+    </select>
+    <delete id="deleteSubscribe">
+        delete from subscribe where uid=#{uid} and subscribeUid=#{subscribeUid};
+    </delete>
+
+</mapper>

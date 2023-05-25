@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.piaomz.piaomz.mapper.ArticleMapper">
+    <select id="queryArticle" resultType="Article">
+        select * from article where articleid=#{articleid};
+    </select>
+    <select id="selectArticleByUID" resultType="Article">
+        select * from article where uid=#{uid};
+    </select>
+    <insert id="insertArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="article.articleid">
+        insert into article (uid,lastmod,createtime,title,content,type,imageurl) value (#{uid}, #{date},#{date},#{title},#{content},#{type},#{imageurl});
+    </insert>
+    <delete id="deleteArticle" parameterType="Article">
+        delete from article where articleid = #{articleid};
+    </delete>
+    <update id="updateArticle" parameterType="Article">
+        update article set uid=#{uid}, lastmod=#{date}, title=#{title}, content=#{content},type=#{type},imageurl=#{imageurl} where articleid = #{articleid};
+    </update>
+
+    <!--  favorite  -->
+    <select id="selectFavoriteByUID" resultType="Favorite">
+        select * from favorite where uid=#{uid};
+    </select>
+    <insert id="favoriteArticle">
+        insert into favorite (uid, articleid,time) value (#{uid},#{articleid},#{time});
+    </insert>
+    <delete id="deleteFavorite">
+        delete from favorite where uid=#{uid} and articleid=#{articleid}
+    </delete>
+
+    <!-- comment -->
+    <select id="selectCommentByArticleID" resultType="Comment">
+        select * from comment where articleid=#{articleid};
+    </select>
+    <select id="queryComment" resultType="Comment">
+        select * from comment where commentid=#{commentid};
+    </select>
+    <insert id="insertComment" parameterType="Comment" useGeneratedKeys="true" keyColumn="commentid" keyProperty="commentid">
+        insert into comment (articleid, uid, content, time) value (#{articleid},#{uid},#{content},#{time});
+    </insert>
+    <delete id="deleteComment">
+        delete from comment where commentid=#{commentid};
+    </delete>
+    <select id="selectCommentFavoriteByUIDAndCommentId" resultType="CommentFavorite">
+        select * from commentFavorite where uid=#{uid} and commentid=#{commentid};
+    </select>
+    <select id="selectCommentFavoriteByCommentId" resultType="CommentFavorite">
+        select * from commentFavorite where commentid=#{commentid};
+    </select>
+    <insert id="favoriteComment" parameterType="CommentFavorite">
+        insert into commentFavorite (uid, commentid,time) value (#{uid},#{commentid},#{time});
+    </insert>
+    <delete id="deleteCommentFavorite">
+        delete from commentFavorite where uid=#{uid} and commentid=#{commentid}
+    </delete>
+
+    <!-- History Article-->
+    <select id="selectHistoryArticleByUid" resultType="HistoryArticle">
+        select * from HistoryArticle where uid=#{uid};
+    </select>
+    <insert id="insertHistoryArticle" parameterType="HistoryArticle" useGeneratedKeys="true" keyColumn="hisId" keyProperty="hisId">
+        insert into HistoryArticle (uid, articleid, time) value (#{uid}, #{articleid}, #{time})
+    </insert>
+    <delete id="clearHistoryArticle">
+        delete from HistoryArticle where uid=#{uid};
+    </delete>
+</mapper>
